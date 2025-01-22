@@ -1,0 +1,20 @@
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = __importDefault(require("express"));
+const productsHandler_1 = require("../handlers/productsHandler");
+const validateObjectId_1 = __importDefault(require("../middleware/validateObjectId"));
+const auth_1 = __importDefault(require("../middleware/auth"));
+const validateData_1 = require("../middleware/validateData");
+const router = express_1.default.Router();
+router.get("/", productsHandler_1.getAllProduct);
+router.get("/featured/", productsHandler_1.featuredProduct);
+router.get("/count/", productsHandler_1.productCount);
+router.get("/:id", validateObjectId_1.default, productsHandler_1.getProductById);
+router.get("/user/:userId", validateObjectId_1.default, productsHandler_1.getProductByUserId);
+router.post("/create-product", validateData_1.validateProductInput, auth_1.default, productsHandler_1.createProduct);
+router.put("/update-product/:id", validateObjectId_1.default, auth_1.default, productsHandler_1.updateProduct);
+router.delete("/delete-product/:id", auth_1.default, validateObjectId_1.default, productsHandler_1.deleteProduct);
+exports.default = router;
